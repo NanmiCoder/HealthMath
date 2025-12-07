@@ -297,27 +297,18 @@ const DashboardView = ({ schedule, completedTasks, toggleTask, progress, onReset
         </div>
       </div>
 
-      <div
-        className="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-flow-row-dense"
-        style={{ gridAutoRows: 'minmax(140px, auto)' }}
-      >
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-flow-row-dense">
         {schedule.map((section, idx) => {
           const colorKey = section.color.split('-')[1];
           const palette = paletteMap[colorKey] || paletteMap.default;
           const done = sectionTotals[section.period]?.done || 0;
           const total = sectionTotals[section.period]?.total || section.tasks.length;
-          const estimatedHeight = section.tasks.length * 90 + 140; // rough: 90 per task + header/padding
-          const rowSpan = Math.max(2, Math.ceil(estimatedHeight / 140));
 
           return (
-            <div
-              key={section.period}
-              className="relative group"
-              style={{ gridRow: `span ${rowSpan}` }}
-            >
+            <div key={section.period} className="relative group">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-transparent via-white/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition duration-500 blur" />
 
-              <div className={`relative glass-card rounded-2xl p-5 border-t-2 ${palette.border} ${palette.glow} transition-transform duration-300 hover:-translate-y-1 h-full flex flex-col`}>
+              <div className={`relative glass-card rounded-2xl p-5 border-t-2 ${palette.border} ${palette.glow} transition-transform duration-300 hover:-translate-y-1`}>
                 <div className="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
                   <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-lg bg-white/5 text-slate-200`}>{section.icon && <section.icon size={20} />}</div>
@@ -329,7 +320,7 @@ const DashboardView = ({ schedule, completedTasks, toggleTask, progress, onReset
                   <span className="text-xs font-mono text-slate-500">BLOCK {idx + 1}</span>
                 </div>
 
-                <div className="space-y-3 flex-1">
+                <div className="space-y-3">
                   {section.tasks.map((task, tIdx) => (
                     <TaskCard
                       key={task.id}
