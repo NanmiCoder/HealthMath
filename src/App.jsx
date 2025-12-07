@@ -219,7 +219,7 @@ const SectionHeader = ({ title, subtitle }) => (
 );
 
 const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
-  const clickable = !!onToggle && !placeholder;
+  const clickable = !placeholder;
 
   return (
     <div
@@ -325,7 +325,7 @@ const DashboardView = ({ schedule, completedTasks, toggleTask, progress, onReset
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-flow-row-dense">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 grid-flow-row-dense">
         {schedule.map((section, idx) => {
           const colorKey = section.color.split('-')[1];
           const palette = paletteMap[colorKey] || paletteMap.default;
@@ -354,7 +354,7 @@ const DashboardView = ({ schedule, completedTasks, toggleTask, progress, onReset
                       key={task.id}
                       task={task}
                       isCompleted={!!completedTasks[task.id]}
-                      onToggle={task.placeholder ? undefined : toggleTask}
+                      onToggle={toggleTask}
                       delay={idx * 3 + tIdx}
                       placeholder={task.placeholder}
                     />
