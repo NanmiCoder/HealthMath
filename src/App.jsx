@@ -61,6 +61,7 @@ const paletteMap = {
 };
 
 const STORAGE_KEY = 'healthMateTasks_v2';
+const SAFE_INSET = 'env(safe-area-inset-bottom, 16px)';
 
 const GlobalStyles = () => (
   <style>{`
@@ -220,28 +221,14 @@ const SectionHeader = ({ title, subtitle }) => (
 );
 
 const LiveClock = ({ currentTime }) => {
-  const seconds = currentTime.getSeconds();
-  const degrees = (seconds / 60) * 360;
   const timeLabel = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   const dateLabel = currentTime.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', weekday: 'short' });
 
   return (
-    <div className="flex items-center gap-3">
-      <div className="relative w-10 h-10 sm:w-11 sm:h-11">
-        <div className="absolute inset-0 rounded-full border border-cyan-500/40 bg-slate-900/60 shadow-[0_0_10px_rgba(6,182,212,0.2)]" />
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{ background: `conic-gradient(#06b6d4 ${degrees}deg, rgba(255,255,255,0.05) ${degrees}deg)` }}
-        />
-        <div className="absolute inset-[6px] rounded-full bg-slate-950 flex items-center justify-center text-[10px] font-mono text-cyan-300">
-          {seconds.toString().padStart(2, '0')}
-        </div>
-      </div>
-      <div className="text-right">
-        <div className="text-xs text-slate-500 font-mono">LOCAL TIME</div>
-        <div className="text-white font-bold font-mono text-sm sm:text-base">{timeLabel}</div>
-        <div className="text-[10px] sm:text-xs text-slate-500 font-mono">{dateLabel}</div>
-      </div>
+    <div className="text-right">
+      <div className="text-xs text-slate-500 font-mono">LOCAL TIME</div>
+      <div className="text-white font-bold font-mono text-sm sm:text-base">{timeLabel}</div>
+      <div className="text-[10px] sm:text-xs text-slate-500 font-mono">{dateLabel}</div>
     </div>
   );
 };
@@ -730,7 +717,10 @@ export default function App() {
         </div>
       </div>
 
-      <main className="pt-6 pb-28 md:pb-0 px-3 sm:px-4 max-w-7xl mx-auto min-h-screen">
+      <main
+        className="pt-6 pb-28 md:pb-0 px-3 sm:px-4 max-w-7xl mx-auto min-h-screen"
+        style={{ paddingBottom: `calc(${SAFE_INSET} + 88px)` }}
+      >
         {activeTab === 'schedule' && (
           <DashboardView
             schedule={dailySchedule}
@@ -746,7 +736,10 @@ export default function App() {
 
       <CreatorFooter />
 
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:hidden z-50">
+      <div
+        className="fixed left-1/2 -translate-x-1/2 w-[90%] md:hidden z-50"
+        style={{ bottom: `calc(${SAFE_INSET} + 12px)` }}
+      >
         <div className="glass-card rounded-2xl p-2 flex justify-between items-center shadow-2xl shadow-black/50 border border-white/10">
           <button
             type="button"
