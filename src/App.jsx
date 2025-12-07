@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   ArrowDown,
   ArrowUp,
+  Star,
 } from 'lucide-react';
 import { dailySchedule, medicineInfo, behaviorRules } from './data/content';
 import Tag from './components/Tag';
@@ -218,6 +219,33 @@ const SectionHeader = ({ title, subtitle }) => (
   </div>
 );
 
+const LiveClock = ({ currentTime }) => {
+  const seconds = currentTime.getSeconds();
+  const degrees = (seconds / 60) * 360;
+  const timeLabel = currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const dateLabel = currentTime.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', weekday: 'short' });
+
+  return (
+    <div className="flex items-center gap-3">
+      <div className="relative w-10 h-10">
+        <div className="absolute inset-0 rounded-full border border-cyan-500/40 bg-slate-900/60 shadow-[0_0_10px_rgba(6,182,212,0.2)]" />
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{ background: `conic-gradient(#06b6d4 ${degrees}deg, rgba(255,255,255,0.05) ${degrees}deg)` }}
+        />
+        <div className="absolute inset-[6px] rounded-full bg-slate-950 flex items-center justify-center text-[10px] font-mono text-cyan-300">
+          {seconds.toString().padStart(2, '0')}
+        </div>
+      </div>
+      <div className="text-right">
+        <div className="text-xs text-slate-500 font-mono">LOCAL TIME</div>
+        <div className="text-white font-bold font-mono">{timeLabel}</div>
+        <div className="text-[10px] text-slate-500 font-mono">{dateLabel}</div>
+      </div>
+    </div>
+  );
+};
+
 const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
   const clickable = !placeholder;
 
@@ -231,7 +259,9 @@ const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
       onKeyDown={
         clickable
           ? (event) => {
-              if (event.key === 'Enter') onToggle(task.id);
+              if (event.key === 'Enter' && event.target === event.currentTarget) {
+                onToggle(task.id);
+              }
             }
           : undefined
       }
@@ -257,7 +287,23 @@ const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
       <button
         type="button"
         disabled={!clickable}
-        onClick={clickable ? () => onToggle(task.id) : undefined}
+        onClick={
+          clickable
+            ? (event) => {
+                event.stopPropagation();
+                onToggle(task.id);
+              }
+            : undefined
+        }
+        onKeyDown={
+          clickable
+            ? (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.stopPropagation();
+                }
+              }
+            : undefined
+        }
         className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all duration-200
           ${clickable ? 'active:scale-[0.85]' : 'opacity-60'}
           ${
@@ -509,6 +555,74 @@ const PathologyView = () => {
   );
 };
 
+const CreatorFooter = () => (
+  <div className="max-w-7xl mx-auto px-4 pb-28 md:pb-16">
+    <div className="relative glass-card rounded-2xl overflow-hidden border border-cyan-500/20 shadow-[0_10px_50px_rgba(6,182,212,0.15)]">
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/60 via-indigo-900/40 to-transparent opacity-80" />
+      <div className="relative p-6 md:p-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="w-14 h-14 rounded-2xl border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.35)] shrink-0">
+            <img src="/logos/my_logo.png" alt="Relakkes avatar" className="w-full h-full object-cover" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 text-sm font-mono text-cyan-300 uppercase">
+              <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+              <span>Creator</span>
+              <span className="text-slate-500">|</span>
+              <span className="text-slate-400">AI 评测 / 自媒体</span>
+            </div>
+            <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">程序员阿江 · Relakkes</h3>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-[11px] text-slate-400 font-mono">万星开源项目作者</span>
+              <a
+                href="https://github.com/NanmiCoder/MediaCrawler"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[11px] text-cyan-200 font-mono inline-flex items-center gap-1 px-2 py-1 rounded-full bg-cyan-900/60 border border-cyan-500/30 transition hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.35)]"
+                title="MediaCrawler GitHub"
+              >
+                <Star className="w-3 h-3 text-cyan-300" />
+                MediaCrawler
+              </a>
+            </div>
+            <p className="text-sm text-slate-400">
+              深度评测全球顶尖 AI 编程助手，用真实项目说话，为开发者提供最有价值的参考。
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-3 justify-start md:justify-end">
+          {[
+            { href: 'https://github.com/NanmiCoder', icon: '/logos/github.png', label: 'GitHub' },
+            { href: 'https://space.bilibili.com/434377496', icon: '/logos/bilibili_logo.png', label: '哔哩哔哩' },
+            {
+              href: 'https://www.xiaohongshu.com/user/profile/5f58bd990000000001003753',
+              icon: '/logos/xiaohongshu_logo.png',
+              label: '小红书',
+            },
+            {
+              href: 'https://www.douyin.com/user/MS4wLjABAAAATJPY7LAlaa5X-c8uNdWkvz0jUGgpw4eeXIwu_8BhvqE',
+              icon: '/logos/douyin.png',
+              label: '抖音',
+            },
+          ].map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group w-12 h-12 rounded-xl border border-cyan-500/20 bg-slate-900/70 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.15)] transition-all hover:-translate-y-0.5 hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]"
+              title={link.label}
+            >
+              <img src={link.icon} alt={link.label} className="w-6 h-6 object-contain group-hover:scale-105 transition-transform" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('schedule');
   const [completedTasks, setCompletedTasks] = useState({});
@@ -521,35 +635,6 @@ export default function App() {
         acc[curr.id] = curr;
         return acc;
       }, {}),
-    [],
-  );
-
-  const paddedSchedule = useMemo(
-    () =>
-      dailySchedule.map((section) =>
-        section.period === 'noon'
-          ? {
-              ...section,
-              tasks: [
-                ...section.tasks,
-                {
-                  id: 'n_pad1',
-                  title: '占位：午后短暂步行',
-                  desc: '3-5分钟轻量活动，促进循环，避免嗜睡。',
-                  tag: '行为',
-                  placeholder: true,
-                },
-                {
-                  id: 'n_pad2',
-                  title: '占位：温水补给',
-                  desc: '200-300ml 温水，避开咖啡/浓茶/碳酸饮料。',
-                  tag: '行为',
-                  placeholder: true,
-                },
-              ],
-            }
-          : section,
-      ),
     [],
   );
 
@@ -582,7 +667,7 @@ export default function App() {
   }, [completedTasks]);
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -617,7 +702,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-widest text-white uppercase font-mono">
-              Cyber<span className="text-cyan-400">Health</span>
+              健康陪伴<span className="text-cyan-400">助手</span>
             </h1>
             <p className="text-[10px] text-slate-500 font-mono tracking-widest">SYSTEM ONLINE v2.0.77</p>
           </div>
@@ -634,12 +719,7 @@ export default function App() {
             <div className="text-xs text-slate-500 font-mono">DAILY SYNC</div>
             <div className="text-cyan-400 font-bold font-mono">{progress}% COMPLETED</div>
           </div>
-          <div className="text-right">
-            <div className="text-xs text-slate-500 font-mono">LOCAL TIME</div>
-            <div className="text-white font-bold font-mono">
-              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </div>
-          </div>
+          <LiveClock currentTime={currentTime} />
         </div>
       </header>
 
@@ -653,7 +733,7 @@ export default function App() {
       <main className="pt-6 px-4 max-w-7xl mx-auto min-h-screen">
         {activeTab === 'schedule' && (
           <DashboardView
-            schedule={paddedSchedule}
+            schedule={dailySchedule}
             completedTasks={completedTasks}
             toggleTask={toggleTask}
             progress={progress}
@@ -663,6 +743,8 @@ export default function App() {
         {activeTab === 'treatment' && <TreatmentView meds={medicineInfo} behaviors={behaviorRules} />}
         {activeTab === 'pathology' && <PathologyView />}
       </main>
+
+      <CreatorFooter />
 
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] md:hidden z-50">
         <div className="glass-card rounded-2xl p-2 flex justify-between items-center shadow-2xl shadow-black/50 border border-white/10">
