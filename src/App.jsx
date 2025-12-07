@@ -210,7 +210,7 @@ const NavButton = ({ active, onClick, icon: Icon, label }) => (
 
 const SectionHeader = ({ title, subtitle }) => (
   <div className="mb-6 relative pl-4 border-l-2 border-cyan-500">
-    <h2 className="text-2xl font-bold text-white tracking-wider uppercase flex items-center gap-2">
+    <h2 className="text-xl md:text-2xl font-bold text-white tracking-wider uppercase flex items-center gap-2">
       {title}
       <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
     </h2>
@@ -227,7 +227,7 @@ const LiveClock = ({ currentTime }) => {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="relative w-10 h-10">
+      <div className="relative w-10 h-10 sm:w-11 sm:h-11">
         <div className="absolute inset-0 rounded-full border border-cyan-500/40 bg-slate-900/60 shadow-[0_0_10px_rgba(6,182,212,0.2)]" />
         <div
           className="absolute inset-0 rounded-full"
@@ -239,8 +239,8 @@ const LiveClock = ({ currentTime }) => {
       </div>
       <div className="text-right">
         <div className="text-xs text-slate-500 font-mono">LOCAL TIME</div>
-        <div className="text-white font-bold font-mono">{timeLabel}</div>
-        <div className="text-[10px] text-slate-500 font-mono">{dateLabel}</div>
+        <div className="text-white font-bold font-mono text-sm sm:text-base">{timeLabel}</div>
+        <div className="text-[10px] sm:text-xs text-slate-500 font-mono">{dateLabel}</div>
       </div>
     </div>
   );
@@ -251,7 +251,7 @@ const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
 
   return (
     <div
-      className={`glass-card rounded-lg p-4 flex items-center justify-between gap-4 transition-all duration-500 animate-glitch
+      className={`glass-card rounded-lg p-3 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 transition-all duration-500 animate-glitch
         ${isCompleted && !placeholder ? 'border-emerald-500/30 bg-emerald-900/10' : ''}
         ${clickable ? 'hover:bg-white/10 cursor-pointer' : 'opacity-70'}`}
       style={{ animationDelay: `${delay * 0.08}s` }}
@@ -275,7 +275,7 @@ const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
           {placeholder && <span className="text-[10px] text-slate-500 font-mono">占位</span>}
         </div>
         <h3
-          className={`font-bold ${
+          className={`font-bold text-base sm:text-lg ${
             isCompleted && !placeholder ? 'text-emerald-400 line-through decoration-emerald-500/50' : 'text-slate-100'
           }`}
         >
@@ -304,7 +304,7 @@ const TaskCard = ({ task, isCompleted, onToggle, delay, placeholder }) => {
               }
             : undefined
         }
-        className={`w-12 h-12 rounded-full flex items-center justify-center border transition-all duration-200
+        className={`w-11 h-11 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border transition-all duration-200
           ${clickable ? 'active:scale-[0.85]' : 'opacity-60'}
           ${
             isCompleted && !placeholder
@@ -356,7 +356,7 @@ const DashboardView = ({ schedule, completedTasks, toggleTask, progress, onReset
             </div>
             <div className="relative h-3 rounded-full bg-slate-900/70 border border-white/5 overflow-hidden mt-1">
               <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-600 via-cyan-400 to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.3)]"
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-600 via-cyan-400 to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-[width] duration-700 ease-out"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -556,22 +556,22 @@ const PathologyView = () => {
 };
 
 const CreatorFooter = () => (
-  <div className="max-w-7xl mx-auto px-4 pb-28 md:pb-16">
+  <div className="max-w-7xl mx-auto px-3 sm:px-4 pb-28 md:pb-16">
     <div className="relative glass-card rounded-2xl overflow-hidden border border-cyan-500/20 shadow-[0_10px_50px_rgba(6,182,212,0.15)]">
       <div className="absolute inset-0 bg-gradient-to-r from-cyan-950/60 via-indigo-900/40 to-transparent opacity-80" />
       <div className="relative p-6 md:p-8 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.35)] shrink-0">
+          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl border border-cyan-500/30 overflow-hidden shadow-[0_0_20px_rgba(6,182,212,0.35)] shrink-0">
             <img src="/logos/my_logo.png" alt="Relakkes avatar" className="w-full h-full object-cover" />
           </div>
-          <div>
+          <div className="text-left">
             <div className="flex items-center gap-2 text-sm font-mono text-cyan-300 uppercase">
               <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
               <span>Creator</span>
               <span className="text-slate-500">|</span>
               <span className="text-slate-400">AI 评测 / 自媒体</span>
             </div>
-            <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tight">程序员阿江 · Relakkes</h3>
+            <h3 className="text-lg sm:text-xl md:text-2xl font-extrabold text-white tracking-tight">程序员阿江 · Relakkes</h3>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-[11px] text-slate-400 font-mono">万星开源项目作者</span>
               <a
@@ -585,7 +585,7 @@ const CreatorFooter = () => (
                 MediaCrawler
               </a>
             </div>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm text-slate-400 leading-relaxed">
               深度评测全球顶尖 AI 编程助手，用真实项目说话，为开发者提供最有价值的参考。
             </p>
           </div>
@@ -694,7 +694,7 @@ export default function App() {
       <div className="noise-overlay" />
       <ParticleCanvas active={showConfetti} />
 
-      <header className="fixed top-0 left-0 w-full h-16 glass-card z-40 px-6 flex items-center justify-between md:justify-around border-b border-white/5">
+      <header className="fixed top-0 left-0 w-full h-16 glass-card z-40 px-4 sm:px-6 flex items-center justify-between md:justify-around border-b border-white/5">
         <div className="flex items-center gap-3">
           <div className="relative">
             <ShieldAlert className="w-8 h-8 text-cyan-400 animate-pulse" />
@@ -730,7 +730,7 @@ export default function App() {
         </div>
       </div>
 
-      <main className="pt-6 px-4 max-w-7xl mx-auto min-h-screen">
+      <main className="pt-6 pb-28 md:pb-0 px-3 sm:px-4 max-w-7xl mx-auto min-h-screen">
         {activeTab === 'schedule' && (
           <DashboardView
             schedule={dailySchedule}
